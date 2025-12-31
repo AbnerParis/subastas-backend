@@ -1,0 +1,13 @@
+# Archivos de sistema y Python
+__pycache__/
+*.pyc
+
+# Entorno Virtual (¡No subir esto!)
+venv/
+env/
+
+# Base de datos local (No subir, cada uno tendrá la suya)
+db.sqlite3
+
+# Archivos de medios (Fotos de prueba)
+media/
