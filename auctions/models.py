@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from datetime import timedelta
+from django.conf import settings
 
 class House(models.Model):
     title = models.CharField(max_length=200) # Ej: Piso en Calle Serrano
@@ -44,3 +45,12 @@ class Item(models.Model):
 
     def __str__(self):
         return self.title
+    
+class Bid(models.Model):
+    item = models.ForeignKey(Item, related_name='bids', on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='bids', on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.amount}€ en {self.item.title}"

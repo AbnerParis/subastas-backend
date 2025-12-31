@@ -25,6 +25,9 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from auctions.views import HouseListAPI, ItemDetailAPI, PlaceBidAPI  # <--- Añade PlaceBidAPI
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     
@@ -35,6 +38,7 @@ urlpatterns = [
     # --- 2. AÑADE ESTAS RUTAS DE LOGIN ---
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'), # El Login
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'), # Renovar tarjeta
+    path('api/items/<int:pk>/bid/', PlaceBidAPI.as_view(), name='place-bid'), # <--- Ruta para pujar
 ]
 
 if settings.DEBUG:
