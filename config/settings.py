@@ -35,7 +35,7 @@ DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = [
-    'web-production-8eb1.up.railway.app'
+    'https://web-production-8eb1.up.railway.app'
 ] # Añade aquí tu dominio
 
 # Application definition
