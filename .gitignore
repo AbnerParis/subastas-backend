@@ -11,3 +11,6 @@ db.sqlite3
 
 # Archivos de medios (Fotos de prueba)
 media/
+
+#contraseñas y llaves
+.env

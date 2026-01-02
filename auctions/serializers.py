@@ -29,3 +29,12 @@ class HouseSerializer(serializers.ModelSerializer):
     class Meta:
         model = House
         fields = ['id', 'title', 'address', 'created_at', 'scenes']
+        
+# 4. Serializer detallado del Objeto (con imagen)        
+class ItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Item
+        fields = [
+            'id', 'title', 'description', 'image', # <--- AÑADE 'image' AQUÍ
+            'starting_price', 'current_price', # ... resto de campos
+        ]

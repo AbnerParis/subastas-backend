@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,13 +20,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-z&-=9lvf^t)p!_ahh=ldcv=ulu-pcow$yw^_i7au58e*w!kz1c"
+###clave django###
+
+
+SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG', default=True, cast=bool)
+
+#########
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -40,6 +46,7 @@ INSTALLED_APPS = [
     'rest_framework',  # Para tu API
     'users',           # Tu app de usuarios
     'auctions',        # Tu app de subastas
+    'storages',  # amazon s3
 ]
 
 MIDDLEWARE = [
@@ -126,3 +133,21 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 }
+# --- CONFIGURACIÓN AWS S3 (FOTOS EN LA NUBE) ---
+#aqui van las llaves de acceso##
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
+############
+# Configuración extra para que funcione bien
+AWS_S3_REGION_NAME = 'eu-north-1'  # Pon la región que elegiste (ej: eu-south-1 para Milán, eu-west-3 para París)
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+AWS_S3_FILE_OVERWRITE = False      # Si subes dos fotos con el mismo nombre, no borra la anterior
+AWS_DEFAULT_ACL = None             # Para evitar errores de permisos al subir
+AWS_S3_VERIFY = True
+# Esto le dice a Django: "La URL base ya no es localhost, es Amazon"
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
+
+# Le decimos a Django que use S3 para los archivos media (fotos)
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'

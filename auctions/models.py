@@ -23,6 +23,9 @@ class Item(models.Model):
     scene = models.ForeignKey(Scene360, related_name='items', on_delete=models.CASCADE)
     title = models.CharField(max_length=200) # Ej: Lámpara Antigua
     description = models.TextField(blank=True)
+    # upload_to='items/': Crea una carpeta "items" dentro del Bucket S3
+    image = models.ImageField(upload_to='items/', null=True, blank=True) 
+    #
     starting_price = models.DecimalField(max_digits=10, decimal_places=2)
     current_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     weight_kg = models.FloatField(default=0, help_text="Peso aproximado en Kg para el envío")
