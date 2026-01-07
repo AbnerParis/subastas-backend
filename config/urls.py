@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
+from auctions.views import get_items
 # Importamos tus vistas
 from auctions.views import HouseListAPI, ItemDetailAPI
 from rest_framework_simplejwt.views import (
@@ -34,7 +35,7 @@ urlpatterns = [
     # --- TUS ENDPOINTS (ENCHUFES) ---
   path('api/houses/', HouseListAPI.as_view(), name='house-list'),
     path('api/items/<int:pk>/', ItemDetailAPI.as_view(), name='item-detail'),
-
+    path('api/items/', get_items, name='get_items'), # <--- Ruta para obtener todos los items
     # --- 2. AÑADE ESTAS RUTAS DE LOGIN ---
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'), # El Login
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'), # Renovar tarjeta

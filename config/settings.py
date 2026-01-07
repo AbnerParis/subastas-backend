@@ -47,8 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'corsheaders', # Para CORS
     'rest_framework',  # Para tu API
+    'corsheaders',   # Para permitir CORS
     'users',           # Tu app de usuarios
     'auctions',        # Tu app de subastas
     'storages',  # amazon s3

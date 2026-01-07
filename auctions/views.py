@@ -3,11 +3,13 @@ from .models import House, Item
 from .serializers import HouseSerializer, ItemSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from .models import Item, Bid
 from django.utils import timezone  # <--- IMPORTANTE
+from .models import Scene360
 
 # VISTA 1: Ver todas las casas (con sus escenas y objetos dentro)
 # URL: /api/houses/
@@ -22,6 +24,13 @@ class HouseListAPI(generics.ListAPIView):
 class ItemDetailAPI(generics.RetrieveAPIView):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
+    
+@api_view(['GET'])
+def get_items(request):
+    items = Scene360.objects.all()
+    serializer = ItemSerializer(items, many=True)
+    return Response(serializer.data)
+    
     
 class PlaceBidAPI(APIView):
     permission_classes = [IsAuthenticated] # Solo usuarios registrados

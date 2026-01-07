@@ -5,12 +5,8 @@ from .models import House, Scene360, Item
 class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
-        fields = [
-            'id', 'title', 'description', 
-            'starting_price', 'current_price', 'weight_kg',
-            'coord_pitch', 'coord_yaw', 
-            'auction_end', 'is_sold'
-        ]
+        fields = '__all__'
+        #['id', 'title', 'description', 'starting_price', 'current_price', 'weight_kg','coord_pitch', 'coord_yaw', 'auction_end', 'is_sold']
 
 # 2. Serializer de la Escena (Incluye los objetos dentro)
 class Scene360Serializer(serializers.ModelSerializer):
