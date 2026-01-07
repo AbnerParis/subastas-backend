@@ -147,8 +147,9 @@ AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
 ############
 # Configuración extra para que funcione bien
-AWS_S3_REGION_NAME = 'eu-north-1'  # Pon la región que elegiste (ej: eu-south-1 para Milán, eu-west-3 para París)
-AWS_S3_SIGNATURE_VERSION = 's3v4'
+AWS_S3_REGION_NAME = 'eu-south-2'  # Pon la región que elegiste (ej: eu-south-1 para Milán, eu-west-3 para París)
+AWS_S3_SIGNATURE_VERSION = 's3v4' # Firma necesaria para algunas regiones
+AWS_QUERYSTRING_AUTH = False  # URLs sin firma temporal
 AWS_S3_FILE_OVERWRITE = False      # Si subes dos fotos con el mismo nombre, no borra la anterior
 AWS_DEFAULT_ACL = None             # Para evitar errores de permisos al subir
 AWS_S3_VERIFY = True
