@@ -9,6 +9,7 @@ from django.utils import timezone
 
 from .models import House, Item, Bid, Scene360
 from .serializers import HouseSerializer, ItemDetailSerializer
+from .serializers import ItemSerializer
 
 
 # VISTA 1: Ver todas las casas (requiere autenticación)
