@@ -9,36 +9,29 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
-
 from pathlib import Path
 from decouple import config
 import dj_database_url
 import os
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
-
-###clave django###
-
+# =========================
+# SEGURIDAD BÁSICA
+# =========================
 
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-#########
-
-# SECURITY WARNING: don't run with debug turned on in production!
-
-
 ALLOWED_HOSTS = ['*']
+
 CSRF_TRUSTED_ORIGINS = [
     'https://web-production-8eb1.up.railway.app',
-] # Añade aquí tu dominio
+]
 
-# Application definition
+# =========================
+# APLICACIONES
+# =========================
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -47,131 +40,155 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',  # Para tu API
-    'corsheaders',   # Para permitir CORS
-    'users',           # Tu app de usuarios
-    'auctions',        # Tu app de subastas
-    'storages',  # amazon s3
+
+    # Terceros
+    'rest_framework',
+    'corsheaders',
+    'storages',
+
+    # Apps propias
+    'users',
+    'auctions',
 ]
+
+# =========================
+# MIDDLEWARE
+# =========================
 
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = "config.urls"
+# =========================
+# URLS / WSGI
+# =========================
+
+ROOT_URLCONF = 'config.urls'
+WSGI_APPLICATION = 'config.wsgi.application'
+
+# =========================
+# TEMPLATES
+# =========================
 
 TEMPLATES = [
     {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
-        "APP_DIRS": True,
-        "OPTIONS": {
-            "context_processors": [
-                "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = "config.wsgi.application"
+# =========================
+# BASE DE DATOS
+# =========================
 
-
-# Database
-# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
-
-# Configuración de Base de Datos Híbrida
 DATABASES = {
     'default': dj_database_url.config(
-        # Si no hay nube, usa SQLite (tu PC)
-        default='sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3'),
+        default=f"sqlite:///{os.path.join(BASE_DIR, 'db.sqlite3')}",
         conn_max_age=600
     )
 }
 
+# =========================
+# USUARIO PERSONALIZADO
+# =========================
 
-# Password validation
-# https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
+AUTH_USER_MODEL = 'users.User'
+
+# =========================
+# PASSWORDS
+# =========================
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
+# =========================
+# INTERNACIONALIZACIÓN
+# =========================
 
-# Internationalization
-# https://docs.djangoproject.com/en/6.0/topics/i18n/
-
-LANGUAGE_CODE = "en-us"
-
-TIME_ZONE = "UTC"
-
+LANGUAGE_CODE = 'en-us'
+TIME_ZONE = 'UTC'
 USE_I18N = True
-
 USE_TZ = True
 
+# =========================
+# STATIC FILES
+# =========================
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.0/howto/static-files/
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATIC_URL = "/static/"
-# Usar nuestro modelo de usuario personalizado
-AUTH_USER_MODEL = 'users.User'
-# Configuración de Django REST Framework
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# =========================
+# DJANGO REST FRAMEWORK
+# =========================
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    ),
 }
-# --- CONFIGURACIÓN AWS S3 (FOTOS EN LA NUBE) ---
-#aqui van las llaves de acceso##
+
+# =========================
+# CORS
+# =========================
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+# =========================
+# AWS S3 (MEDIA)
+# =========================
+
 AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
-############
-# Configuración extra para que funcione bien
-AWS_S3_REGION_NAME = 'eu-west-3'  # Pon la región que elegiste (ej: eu-south-1 para Milán, eu-west-3 para París)
-AWS_S3_SIGNATURE_VERSION = 's3v4' # Firma necesaria para algunas regiones
-AWS_QUERYSTRING_AUTH = False  # URLs sin firma temporal
-AWS_S3_FILE_OVERWRITE = False      # Si subes dos fotos con el mismo nombre, no borra la anterior
-AWS_DEFAULT_ACL = None             # Para evitar errores de permisos al subir
+
+AWS_S3_REGION_NAME = 'eu-west-3'
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+AWS_QUERYSTRING_AUTH = False
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
 AWS_S3_VERIFY = True
-# Esto le dice a Django: "La URL base ya no es localhost, es Amazon"
+
 AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 
-# Le decimos a Django que use S3 para los archivos media (fotos)
-#DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 STORAGES = {
-    "default": {
-        "BACKEND": "storages.backends.s3.S3Storage",
+    'default': {
+        'BACKEND': 'storages.backends.s3.S3Storage',
     },
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    'staticfiles': {
+        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
     },
 }
 
-# Configuración de WhiteNoise (Para que el Admin se vea bien)
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-# CORS Configuration
-CORS_ALLOW_ALL_ORIGINS = True
+# =========================
+# DEFAULT PRIMARY KEY
+# =========================
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
