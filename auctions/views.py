@@ -12,7 +12,7 @@ from .models import House, Item, Bid
 
 # ⚠️ IMPORTANTE: Si te da error de "ImportError: cannot import name ItemDetailSerializer",
 # borra "ItemDetailSerializer" de aquí abajo y usa "ItemSerializer" en la VISTA 2.
-from .serializers import HouseSerializer, ItemSerializer, ItemDetailSerializer
+from .serializers import HouseSerializer, ItemSerializer# ItemDetailSerializer
 
 
 # ==========================================
@@ -33,7 +33,7 @@ class HouseListAPI(generics.ListAPIView):
 class ItemDetailAPI(generics.RetrieveAPIView):
     queryset = Item.objects.all()
     # Si no tienes ItemDetailSerializer en serializers.py, cambia esto por ItemSerializer
-    serializer_class = ItemDetailSerializer 
+    serializer_class = ItemSerializer 
     permission_classes = [AllowAny] # He puesto esto público para que puedas probar fácil
 
 
