@@ -1,36 +1,84 @@
 from rest_framework import serializers
 from .models import House, Scene360, Item
 
-# 1. Serializer del Objeto (El nivel más bajo)
-class ItemSerializer(serializers.ModelSerializer):
+
+# =========================
+# ITEM – LISTADO / ESCENAS
+# =========================
+class ItemListSerializer(serializers.ModelSerializer):
+    """
+    Serializer ligero para mostrar items dentro de escenas 360
+    y listados generales.
+    """
     class Meta:
         model = Item
-        fields = '__all__'
-        #['id', 'title', 'description', 'starting_price', 'current_price', 'weight_kg','coord_pitch', 'coord_yaw', 'auction_end', 'is_sold']
+        fields = [
+            'id',
+            'title',
+            'current_price',
+            'coord_pitch',
+            'coord_yaw',
+        ]
 
-# 2. Serializer de la Escena (Incluye los objetos dentro)
+
+# =========================
+# ITEM – DETALLE COMPLETO
+# =========================
+class ItemDetailSerializer(serializers.ModelSerializer):
+    """
+    Serializer completo para el detalle de un item individual.
+    """
+    class Meta:
+        model = Item
+        fields = [
+            'id',
+            'title',
+            'description',
+            'image',
+            'starting_price',
+            'current_price',
+            'weight_kg',
+            'coord_pitch',
+            'coord_yaw',
+            'auction_end',
+            'is_sold',
+        ]
+
+
+# =========================
+# ESCENA 360 (CON ITEMS)
+# =========================
 class Scene360Serializer(serializers.ModelSerializer):
-    # Esto es la magia: Incrustamos los items dentro de la escena
-    items = ItemSerializer(many=True, read_only=True)
+    """
+    Escena 360 con sus items incrustados.
+    """
+    items = ItemListSerializer(many=True, read_only=True)
 
     class Meta:
         model = Scene360
-        fields = ['id', 'name', 'image', 'items']
+        fields = [
+            'id',
+            'name',
+            'image',
+            'items',
+        ]
 
-# 3. Serializer de la Casa (Incluye las escenas dentro)
+
+# =========================
+# CASA (CON ESCENAS)
+# =========================
 class HouseSerializer(serializers.ModelSerializer):
-    # Incrustamos las escenas dentro de la casa
+    """
+    Casa con todas sus escenas 360.
+    """
     scenes = Scene360Serializer(many=True, read_only=True)
 
     class Meta:
         model = House
-        fields = ['id', 'title', 'address', 'created_at', 'scenes']
-        
-# 4. Serializer detallado del Objeto (con imagen)        
-class ItemSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Item
         fields = [
-            'id', 'title', 'description', 'image', # <--- AÑADE 'image' AQUÍ
-            'starting_price', 'current_price', # ... resto de campos
+            'id',
+            'title',
+            'address',
+            'created_at',
+            'scenes',
         ]

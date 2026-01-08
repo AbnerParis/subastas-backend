@@ -66,7 +66,6 @@ python-decouple==3.8
 python-dotenv==1.1.0
 pytokens==0.3.0
 pytz==2025.2
-
 pyzmq==26.4.0
 referencing==0.36.2
 requests==2.32.3
@@ -88,3 +87,4 @@ urllib3==2.4.0
 watchdog==6.0.0
 wcwidth==0.2.13
 whitenoise==6.11.0
+zipp==3.20.0

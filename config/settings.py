@@ -35,7 +35,7 @@ DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = [
-    'https://web-production-8eb1.up.railway.app'
+    'https://web-production-8eb1.up.railway.app',
 ] # Añade aquí tu dominio
 
 # Application definition
@@ -133,7 +133,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 # Usar nuestro modelo de usuario personalizado
 AUTH_USER_MODEL = 'users.User'
 # Configuración de Django REST Framework
@@ -166,7 +166,7 @@ STORAGES = {
         "BACKEND": "storages.backends.s3.S3Storage",
     },
     "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
 
