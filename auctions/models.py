@@ -33,6 +33,15 @@ class Item(models.Model):
     # Coordenadas para el punto en el 3D (Pitch/Yaw)
     coord_pitch = models.FloatField(help_text="Coordenada Vertical en la foto 360")
     coord_yaw = models.FloatField(help_text="Coordenada Horizontal en la foto 360")
+    
+    
+    #end time: Fecha y hora en la que termina la subasta
+    # Si no se pone, se calcula automáticamente a los 3 días de crear el ítem
+    # Si quieres poner una fecha personalizada:  
+    #  item.end_time = timezone.now() + timedelta(hours=24)
+    end_time = models.DateTimeField(null=True, blank=True)
+    def __str__(self):
+        return self.title
 
     # Lógica de subasta
     auction_end = models.DateTimeField(blank=True, null=True)
