@@ -85,7 +85,7 @@ class PlaceBidAPI(APIView):
             )
 
         # 2. Validación: Tiempo
-        if item.auction_end and timezone.now() > item.auction_end:
+        if item.end_time and timezone.now() > item.end_time:
             return Response(
                 {"error": "La subasta ha finalizado."},
                 status=status.HTTP_400_BAD_REQUEST
