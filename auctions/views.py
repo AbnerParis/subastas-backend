@@ -13,7 +13,8 @@ from .models import House, Item, Bid
 # ⚠️ IMPORTANTE: Si te da error de "ImportError: cannot import name ItemDetailSerializer",
 # borra "ItemDetailSerializer" de aquí abajo y usa "ItemSerializer" en la VISTA 2.
 from .serializers import HouseSerializer, ItemSerializer# ItemDetailSerializer
-
+from .serializers import RegisterSerializer # Si haces registro de usuarios
+from django.contrib.auth.models import User # Modelo de usuario por defecto de Django
 
 # ==========================================
 # VISTA 1: Ver todas las casas
@@ -119,3 +120,12 @@ class PlaceBidAPI(APIView):
             {"success": "Puja aceptada", "new_price": amount},
             status=status.HTTP_200_OK
         )
+        
+# ==========================================
+# VISTA 5: Registrar nuevo usuario
+# URL: /api/register/
+# ==========================================
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes = [AllowAny] # Importante: Cualquiera puede registrarse (no hace falta login previo)
+    serializer_class = RegisterSerializer

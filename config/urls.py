@@ -27,6 +27,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from auctions.views import HouseListAPI, ItemDetailAPI, PlaceBidAPI  # <--- Añade PlaceBidAPI
+from auctions.views import get_items, RegisterView #<--- Añade RegisterView
 
 
 urlpatterns = [
@@ -40,6 +41,8 @@ urlpatterns = [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'), # El Login
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'), # Renovar tarjeta
     path('api/items/<int:pk>/bid/', PlaceBidAPI.as_view(), name='place-bid'), # <--- Ruta para pujar
+    path('api/items/', get_items, name='get_items'),
+    path('api/register/', RegisterView.as_view(), name='register'), #<--- Ruta para registrar nuevo usuario
 ]
 
 if settings.DEBUG:
