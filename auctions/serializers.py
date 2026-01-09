@@ -16,7 +16,7 @@ class ItemSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Item
-        fields = '__all__'  # Truco: Trae todos los campos automáticamente
+        fields = '__all__'  # Trae todos los campos automáticamente
 
 
 # =========================

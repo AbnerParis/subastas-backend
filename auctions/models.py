@@ -43,10 +43,6 @@ class Item(models.Model):
     def __str__(self):
         return self.title
 
-    # Lógica de subasta
-    auction_end = models.DateTimeField(blank=True, null=True)
-    is_sold = models.BooleanField(default=False)
-
     def save(self, *args, **kwargs):
         # Si es nuevo, ponemos el precio actual igual al de salida
         if not self.id:
