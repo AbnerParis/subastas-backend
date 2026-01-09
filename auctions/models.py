@@ -40,15 +40,16 @@ class Item(models.Model):
     # Si quieres poner una fecha personalizada:  
     #  item.end_time = timezone.now() + timedelta(hours=24)
     end_time = models.DateTimeField(null=True, blank=True)
-    def __str__(self):
-        return self.title
-
     def save(self, *args, **kwargs):
-        # Si es nuevo, ponemos el precio actual igual al de salida
+        # Si es nuevo (todavía no tiene ID)
         if not self.id:
+            # Poner precio inicial
             self.current_price = self.starting_price
-            # La subasta dura 3 días desde que se crea
-            self.end_time = timezone.now() + timedelta(days=3)
+            
+            # SOLO si no hay fecha puesta, ponemos 3 días por defecto
+            if not self.end_time: 
+                self.end_time = timezone.now() + timedelta(days=3)
+                
         super().save(*args, **kwargs)
 
     def __str__(self):
