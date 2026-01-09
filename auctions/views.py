@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from datetime import timedelta
 
 # Asegúrate de que tus modelos se llaman así en models.py
 from .models import House, Item, Bid 
