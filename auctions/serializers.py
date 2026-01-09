@@ -4,7 +4,7 @@
 #Asegúrate de que en models.py existen estas 3 clases (House, Scene360, Item)
 from rest_framework import serializers
 from .models import House, Scene360, Item 
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 # =========================
 # ITEM – SERIALIZER PRINCIPAL
@@ -60,6 +60,7 @@ class HouseSerializer(serializers.ModelSerializer):
 # =========================
 # REGISTRO DE USUARIOS
 # =========================
+User = get_user_model()
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -67,7 +68,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
-        # Esta función crea el usuario de forma segura (encriptando la contraseña)
         user = User.objects.create_user(
             username=validated_data['username'],
             email=validated_data['email'],

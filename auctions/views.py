@@ -1,5 +1,6 @@
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from django.contrib.auth import get_user_model #  importar el modelo de usuario
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -14,7 +15,9 @@ from .models import House, Item, Bid
 # borra "ItemDetailSerializer" de aquí abajo y usa "ItemSerializer" en la VISTA 2.
 from .serializers import HouseSerializer, ItemSerializer# ItemDetailSerializer
 from .serializers import RegisterSerializer # Si haces registro de usuarios
-from django.contrib.auth.models import User # Modelo de usuario por defecto de Django
+
+
+User = get_user_model()
 
 # ==========================================
 # VISTA 1: Ver todas las casas
@@ -126,6 +129,7 @@ class PlaceBidAPI(APIView):
 # URL: /api/register/
 # ==========================================
 class RegisterView(generics.CreateAPIView):
-    queryset = User.objects.all()
-    permission_classes = [AllowAny] # Importante: Cualquiera puede registrarse (no hace falta login previo)
+    queryset = User.objects.all() # Necesario para CreateAPIView
+    permission_classes = [AllowAny]
     serializer_class = RegisterSerializer
+    
