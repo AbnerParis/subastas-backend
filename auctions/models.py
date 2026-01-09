@@ -48,7 +48,7 @@ class Item(models.Model):
         if not self.id:
             self.current_price = self.starting_price
             # La subasta dura 3 días desde que se crea
-            self.auction_end = timezone.now() + timedelta(days=3)
+            self.end_time = timezone.now() + timedelta(days=3)
         super().save(*args, **kwargs)
 
     def __str__(self):
